@@ -1,18 +1,24 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Login extends CI_Controller{
 
 	
 	public function index()
 	{
 		
+		
 		/**
 		 * 登录 GET
 		 */
-		if($this->input->method() == 'GET')
+		if($this->input->method() == 'get')
 		{
-			$this->load->view('font/login');
+			
+			$count = $this->db->count_all('msg');
+			
+			$this->load->view('font/header');
+			$this->load->view('font/login',['count'=>$count]);
+			$this->load->view('font/footer');
 		}
 		
 		
@@ -25,23 +31,17 @@ class Login extends CI_Controller {
 		 *  @return string json 返回json格式token
 		 *  
 		 */
-		if($this->input->method() == 'POST')
+		if($this->input->method() == 'post')
 		{
 			
-			$user_name	= $this->input->post('userName');
-			$password	= $this->input->post('password');
+			$user_name	= $this->input->post('name');
+
+			$token 	= md5(md5($user_name).rand());
+			$this->db->insert('users', ['user_name'=>$user_name, 'token'=>$token]);
 			
-			$query 	= $this->db->where('user_name', $user_name)->get('users');	
-			$row 	= $query->row_array();
+			$count = $this->db->count_all('msg');
 			
-			if(empty($row))
-			{
-				ajaxReturn(1, '用户不存在');
-			}
-			
-			
-			
-			
+			ajaxReturn(11, ['token'=>$token, 'count'=>++$count]);
 			
 		}
 		

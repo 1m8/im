@@ -103,6 +103,83 @@ class Server extends CI_Controller {
 		
 	}
 	
+	
+	/**
+	 * 
+	 * webSocket 创建websocket服务器
+	 * 
+	 * 
+	 * 
+	 */
+	public function websocket()
+	{
+		
+		$serv = new swoole_websocket_server("0.0.0.0", 9501);
+		
+		$serv->on('open', function ($serv, $request) {
+			echo "server: handshake success with fd{$request->fd}\n";
+			$serv->push($request->fd, "open success");
+		});
+			
+		$serv->on('message', function ($serv, $frame) {
+			echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";
+			$serv->push($frame->fd, "this is server:".$frame->data);
+		});
+			
+		$serv->on('close', function ($serv, $fd) {
+			echo "client {$fd} closed\n";
+		});
+		
+		$serv->start();
+		
+		
+	}
+	
+	
+	
+	/**
+	 * 定时器
+	 * 
+	 * swoole_timer_tick
+	 * 
+	 * int swoole_timer_tick(int $ms, callable $callback, mixed $user_param);
+	 * 
+	 */
+	public function timerTick()
+	{
+		$user_param = 'param';
+		
+		swoole_timer_tick(2000, function($timerid, $user_param){
+
+			echo time()."\n";
+			
+		} , $user_param);
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 }

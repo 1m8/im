@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
-	'database' => '',
+	'hostname' => '182.92.184.167',
+	'username' => 'root',
+	'password' => '1m85@M1188808',
+	'database' => 'chat',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'dbprefix' => 't_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
